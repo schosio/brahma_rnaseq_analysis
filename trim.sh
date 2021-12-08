@@ -7,6 +7,6 @@ for infile in *R1.fastq.gz
 	name=$(echo $infile | awk -F"_R." '{print $1}')
 	echo $outfile
 	echo $name
-	echo "java -jar /home/chaos/softwares/Trimmomatic-0.39/trimmomatic-0.39.jar PE -version -threads 40 -phred33 -trimlog $outfile\trimLogFile.log -summary $outfile\statsSummaryFile.txt $name ${name}_R2.fastq.gz $outfile ILLUMINACLIP:universal_adaptor.fa:2:40:15 AVGQUAL:24"
-    	java -jar /home/chaos/softwares/Trimmomatic-0.39/trimmomatic-0.39.jar PE -version -threads 40 -phred33 -trimlog $outfile\trimLogFile.log -summary $outfile\statsSummaryFile.txt $name ${name}_R2.fastq.gz $outfile ILLUMINACLIP:universal_adaptor.fa:2:40:15 AVGQUAL:24
+	echo "java -jar /home/chaos/softwares/Trimmomatic-0.39/trimmomatic-0.39.jar PE -version -threads 40 -phred33 -trimlog $outfile\trimLogFile.log -summary $outfile\statsSummaryFile.txt $infile ${name}_R2.fastq.gz $outfile ILLUMINACLIP:universal_adaptor.fa:2:40:15 AVGQUAL:24"
+    	java -jar /home/chaos/softwares/Trimmomatic-0.39/trimmomatic-0.39.jar PE -version -threads 40 -phred33 -trimlog $outfile\trimLogFile.log -summary $outfile\statsSummaryFile.txt $infile ${name}_R2.fastq.gz $outfile ILLUMINACLIP:universal_adaptor.fa:2:40:15 AVGQUAL:24
 	done
