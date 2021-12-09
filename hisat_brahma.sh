@@ -20,24 +20,24 @@ do
         #options for hisat: -p is for threads used, --known-splicesite-infile is for splice site file
         #options for samtools: view is for file conversion, -bS is for .bam as output and .sam as input
         #options for samtools: sort is for sorting, -n is sorting by name, -o is for output
-        hisat2 -p $threads -x $idx --known-splicesite-infile $splicefile -1 $R1_pair -2 $R2_pair | samtools view -bS - | samtools sort -n - -o $name.sorted.bam
+        hisat2 -p $threads -x $idx --known-splicesite-infile $splicefile -1 $R1_pair -2 $R2_pair | samtools view -@ 40 -bS - | samtools sort -@ 40 -n - -o $name.sorted.bam
 done
 
 for j in *.sorted.bam
 do
   	    date
-	      name1=$(echo $j | awk -F"_" '{print $1}')
+	      name1=$(echo $j | awk -F".sorted." '{print $1}')
         echo $name1
         echo "samtools fixmate -m $j - | samtools sort - | samtools markdup -rs - $name1.rmPCRdup.bam"
         #options for samtools: fixmate is for fix mate information, markdup is for marking duplicates       
-        samtools fixmate -m $j - | samtools sort - | samtools markdup -rs - $name1.rmPCRdup.bam
+        samtools fixmate -@ 40 -m $j - | samtools sort -@ 40 - | samtools markdup -@ 40 -rs - $name1.rmPCRdup.bam
 done
 
 for u in *.rmPCRdup.bam
 do
   	date
     #options for samtools: index is for indexing the bam file, -b is to generate .bai index
-	  samtools index -b $u
+	  samtools index -@ 40 -b $u
   
 done
 
@@ -51,7 +51,7 @@ dir=/home/chaos/BRAHMA/raw_fastq
 for i in *rmPCRdup.bam
 do
   	date
-        name=$(echo $i | awk -F"_" '{print $1}')
+        name=$(echo $i | awk -F".rmPCRdup" '{print $1}')
         echo $name
         echo "stringtie $i -G ${annotation} -o $name.annotation.gtf -p 40 -b ${dir} -A $name.gene_abund.out"
         #options for stringtie: -G is for annotation file, -o is for output gtf file, -p is or threads, -b is for location of ballown table files
