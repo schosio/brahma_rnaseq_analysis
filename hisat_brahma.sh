@@ -1,5 +1,11 @@
 #!/bin/bash
 
+
+set -o verbose 
+
+
+
+date
 #threads = processors that will be used in process
 threads=40
 #idx = location of reference genome index
@@ -45,7 +51,7 @@ done
 #annotation = location of annotation file
 annotation=/home/chaos/draic_data_analysis/annotation_file/gencode.v38.annotation.gtf
 #dir = output location of ballgown table files
-dir=/home/chaos/BRAHMA/raw_fastq
+dir=/home/chaos/BRAHMA/trimmed_fastq_paired
 
 
 for i in *rmPCRdup.bam
